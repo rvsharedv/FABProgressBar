@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="RV_FABProgressBar">
+        <attr name="rv_FabColor" format="color"/>
+        <attr name="rv_progressColor" format="color"/>
+    </declare-styleable>
+
+</resources>
