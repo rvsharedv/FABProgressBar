@@ -12,11 +12,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.rvsharedv.fabprogressbar.R;
+import com.rvsharedv.ringtonemanagerbyrvsharedv.R;
+
 
 /*
  * Copyright (C) 2017 RVsharedv [ http://rvsharedv.com ]
@@ -97,15 +99,25 @@ public class FABProgressBar extends FrameLayout{
         setGravity();
     }
 
+    public void setFABImageResources(int resId){
+        if(mFloatingActionButton != null){
+            mFloatingActionButton.setImageResource(resId);
+        }
+    }
+
     /**
      * Show FABProgress Bar.
      */
     public void show(){
-        if(mFloatingActionButton != null){
-            mFloatingActionButton.show();
-        }
-        if(mProgressBar != null){
-            mProgressBar.setVisibility(VISIBLE);
+        try{
+            setVisibility(VISIBLE);
+        }finally{
+            if(mFloatingActionButton != null){
+                mFloatingActionButton.show();
+            }
+            if(mProgressBar != null){
+                mProgressBar.setVisibility(VISIBLE);
+            }
         }
     }
 
@@ -117,9 +129,24 @@ public class FABProgressBar extends FrameLayout{
             mProgressBar.setVisibility(GONE);
         }
         if(mFloatingActionButton != null){
-            mFloatingActionButton.hide();
+            mFloatingActionButton.hide(mOnVisibilityChangedListener);
         }
     }
+
+    private FloatingActionButton.OnVisibilityChangedListener mOnVisibilityChangedListener =
+            new FloatingActionButton.OnVisibilityChangedListener() {
+
+        @Override
+        public void onShown(FloatingActionButton fab) {
+            super.onShown(fab);
+        }
+
+        @Override
+        public void onHidden(FloatingActionButton fab) {
+            super.onHidden(fab);
+            setVisibility(GONE);
+        }
+    };
 
     /**
      * set progress bar maximum
@@ -207,7 +234,7 @@ public class FABProgressBar extends FrameLayout{
         //link ====== https://en.wikipedia.org/wiki/Wikipedia:Text_of_Creative_Commons_Attribution-ShareAlike_3.0_Unported_License
         int Y = (int)(0.2126 * R + 0.7152 * G + 0.0722 * B);
 
-        if(Y > 127){
+        if(Y > 128){
             return Color.BLACK;
         }
 
